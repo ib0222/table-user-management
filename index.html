@@ -4,52 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Management</title>
-    <style>
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      #pagination-controls {
-        margin-top: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <input
-      type="text"
-      id="search-input"
-      placeholder="Search by name or email"
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
     />
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Job</th>
-          <th>Company</th>
-          <th>Age</th>
-          <th>Retired</th>
-        </tr>
-      </thead>
-      <tbody id="user-table-body">
-        <!-- Data will be populated here -->
-      </tbody>
-    </table>
-    <div id="pagination-controls">
-      <button id="previous-button">Previous</button>
-      <span id="pagination-info">Page 1 of N</span>
-      <button id="next-button">Next</button>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search by name or email"
+        class="mb-4 p-2 border rounded w-full"
+      />
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="py-2 px-4">Name</th>
+              <th class="py-2 px-4">Address</th>
+              <th class="py-2 px-4">Email</th>
+              <th class="py-2 px-4">Phone Number</th>
+              <th class="py-2 px-4">Job</th>
+              <th class="py-2 px-4">Company</th>
+              <th class="py-2 px-4">Age</th>
+              <th class="py-2 px-4">Retired</th>
+              <th class="py-2 px-4">Edit</th>
+            </tr>
+          </thead>
+          <tbody id="user-table-body" class="text-sm">
+            <!-- Data will be populated here -->
+          </tbody>
+        </table>
+      </div>
+      <div id="pagination-controls" class="flex justify-between items-center mt-4">
+        <button id="previous-button" class="bg-blue-500 text-white px-4 py-2 rounded">Previous</button>
+        <span id="pagination-info">Page 1 of N</span>
+        <button id="next-button" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+      </div>
     </div>
     <script src="app.js"></script>
   </body>

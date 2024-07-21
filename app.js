@@ -15,8 +15,9 @@ class Person {
 }
 
 class User extends Person {
-  constructor(name, address, email, phone_number, birthdate, job, company) {
+  constructor(id, name, address, email, phone_number, birthdate, job, company) {
     super(name, address, email, phone_number, birthdate);
+    this.id = id;
     this.job = job;
     this.company = company;
   }
@@ -25,12 +26,14 @@ class User extends Person {
     return this.calculateAge() > 65;
   }
 }
+
 async function fetchUserData() {
   const response = await fetch("db.json");
   const data = await response.json();
   return data.map(
-    (user) =>
+    (user, index) =>
       new User(
+        index,
         user.name,
         user.address,
         user.email,
@@ -75,7 +78,11 @@ function renderTable(data) {
     row.insertCell(5).innerText = user.company;
     row.insertCell(6).innerText = user.calculateAge();
     row.insertCell(7).innerText = user.isRetired() ? "Yes" : "No";
+    row.insertCell(
+      8
+    ).innerHTML = `<button class="delete-button bg-yellow-500 text-white px-4 py-2 rounded" data-id="${user.id}">Delete</button>`;
   });
+  setupDeleteButtons();
   updatePaginationInfo(data.length);
 }
 
@@ -122,4 +129,16 @@ function changePage(direction) {
     renderTable(users);
     setupPagination();
   }
+}
+
+function setupDeleteButtons() {
+  document.querySelectorAll(".delete-button").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const userId = parseInt(event.target.getAttribute("data-id"), 10);
+      users = users.filter(user => user.id !== userId);
+      renderTable(users);
+      setupPagination();
+      console.log(users);
+    });
+  });
 }
