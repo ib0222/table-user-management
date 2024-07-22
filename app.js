@@ -28,7 +28,7 @@ class User extends Person {
 }
 
 async function fetchUserData() {
-  const response = await fetch("db.json");
+  const response = await fetch("http://localhost:3000/users");
   const data = await response.json();
   return data.map(
     (user, index) =>
@@ -80,7 +80,10 @@ function renderTable(data) {
     row.insertCell(7).innerText = user.isRetired() ? "Yes" : "No";
     row.insertCell(
       8
-    ).innerHTML = `<button class="delete-button bg-yellow-500 text-white px-4 py-2 rounded" data-id="${user.id}">Delete</button>`;
+    ).innerHTML = `<button class="delete-button bg-red-600 text-white px-4 py-2 rounded" data-id="${user.id}">🗑️</button>`;
+    row.insertCell(
+      9
+    ).innerHTML = `<button class="edit-button bg-yellow-500 text-white px-4 py-2 rounded" data-id="${user.id}">🖊️</button>`;
   });
   setupDeleteButtons();
   updatePaginationInfo(data.length);
@@ -133,12 +136,11 @@ function changePage(direction) {
 
 function setupDeleteButtons() {
   document.querySelectorAll(".delete-button").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const userId = parseInt(event.target.getAttribute("data-id"), 10);
-      users = users.filter(user => user.id !== userId);
+    button.addEventListener("click", (e) => {
+      const selectedId = parseInt(e.target.getAttribute("data-id"));
+      users = users.filter((user) => user.id !== selectedId);
       renderTable(users);
       setupPagination();
-      console.log(users);
     });
   });
 }
