@@ -62,6 +62,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   document
     .getElementById("next-button")
     .addEventListener("click", () => changePage(1));
+  document
+    .getElementById("add-user-button")
+    .addEventListener("click", openAddUserModal);
+  document
+    .getElementById("cancel-button")
+    .addEventListener("click", closeModal);
+  document
+    .getElementById("user-form")
+    .addEventListener("submit", handleFormSubmit);
 });
 
 function renderTable(data) {
@@ -80,12 +89,13 @@ function renderTable(data) {
     row.insertCell(7).innerText = user.isRetired() ? "Yes" : "No";
     row.insertCell(
       8
-    ).innerHTML = `<button class="delete-button bg-red-600 text-white px-4 py-2 rounded" data-id="${user.id}">🗑️</button>`;
-    row.insertCell(
-      9
-    ).innerHTML = `<button class="edit-button bg-yellow-500 text-white px-4 py-2 rounded" data-id="${user.id}">🖊️</button>`;
+    ).innerHTML = `
+      <button class="edit-button bg-yellow-500 text-white px-4 py-2 rounded mr-2" data-id="${user.id}">🖊️</button>
+      <button class="delete-button bg-red-600 text-white px-4 py-2 rounded" data-id="${user.id}">🗑️</button>
+    `;
   });
   setupDeleteButtons();
+  setupEditButtons();
   updatePaginationInfo(data.length);
 }
 
@@ -143,4 +153,79 @@ function setupDeleteButtons() {
       setupPagination();
     });
   });
+}
+
+function setupEditButtons() {
+  document.querySelectorAll(".edit-button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const selectedId = parseInt(e.target.getAttribute("data-id"));
+      const user = users.find((user) => user.id === selectedId);
+      openEditUserModal(user);
+    });
+  });
+}
+
+function openAddUserModal() {
+  document.getElementById("user-form").reset();
+  document.getElementById("user-id").value = "";
+  document.getElementById("modal-title").innerText = "Add User";
+  document.getElementById("user-modal").classList.remove("hidden");
+}
+
+function openEditUserModal(user) {
+  document.getElementById("user-id").value = user.id;
+  document.getElementById("name").value = user.name;
+  document.getElementById("address").value = user.address;
+  document.getElementById("email").value = user.email;
+  document.getElementById("phone_number").value = user.phone_number;
+  document.getElementById("birthdate").value = user.birthdate.toISOString().split('T')[0];
+  document.getElementById("job").value = user.job;
+  document.getElementById("company").value = user.company;
+  document.getElementById("modal-title").innerText = "Edit User";
+  document.getElementById("user-modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("user-modal").classList.add("hidden");
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const id = document.getElementById("user-id").value;
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const email = document.getElementById("email").value;
+  const phone_number = document.getElementById("phone_number").value;
+  const birthdate = document.getElementById("birthdate").value;
+  const job = document.getElementById("job").value;
+  const company = document.getElementById("company").value;
+
+  if (id) {
+    // Edit existing user
+    const user = users.find((user) => user.id === parseInt(id));
+    user.name = name;
+    user.address = address;
+    user.email = email;
+    user.phone_number = phone_number;
+    user.birthdate = new Date(birthdate);
+    user.job = job;
+    user.company = company;
+  } else {
+    // Add new user
+    const newUser = new User(
+      users.length,
+      name,
+      address,
+      email,
+      phone_number,
+      new Date(birthdate),
+      job,
+      company
+    );
+    users.push(newUser);
+  }
+
+  renderTable(users);
+  setupPagination();
+  closeModal();
 }

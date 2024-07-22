@@ -17,6 +17,12 @@
         placeholder="Search by name or email"
         class="mb-4 p-2 border rounded w-full"
       />
+      <button
+        id="add-user-button"
+        class="bg-green-500 text-white px-4 py-2 rounded mb-4"
+      >
+        Add User
+      </button>
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead>
@@ -29,8 +35,7 @@
               <th class="py-2 px-4">Company</th>
               <th class="py-2 px-4">Age</th>
               <th class="py-2 px-4">Retired</th>
-              <th class="py-2 px-4">Edit</th>
-              
+              <th class="py-2 px-4">Actions</th>
             </tr>
           </thead>
           <tbody id="user-table-body" class="text-sm">
@@ -42,6 +47,48 @@
         <button id="previous-button" class="bg-blue-500 text-white px-4 py-2 rounded">Previous</button>
         <span id="pagination-info">Page 1 of N</span>
         <button id="next-button" class="bg-blue-500 text-white px-4 py-2 rounded">Next</button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="user-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
+      <div class="bg-white p-4 rounded shadow-lg w-1/2">
+        <h2 id="modal-title" class="text-xl mb-4">Add/Edit User</h2>
+        <form id="user-form">
+          <input type="hidden" id="user-id" />
+          <div class="mb-4">
+            <label for="name" class="block">Name</label>
+            <input type="text" id="name" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="address" class="block">Address</label>
+            <input type="text" id="address" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block">Email</label>
+            <input type="email" id="email" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="phone_number" class="block">Phone Number</label>
+            <input type="tel" id="phone_number" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="birthdate" class="block">Birthdate</label>
+            <input type="date" id="birthdate" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="job" class="block">Job</label>
+            <input type="text" id="job" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="mb-4">
+            <label for="company" class="block">Company</label>
+            <input type="text" id="company" class="w-full p-2 border rounded" required />
+          </div>
+          <div class="flex justify-end">
+            <button type="button" id="cancel-button" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+          </div>
+        </form>
       </div>
     </div>
     <script src="app.js"></script>
